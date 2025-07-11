@@ -13,10 +13,13 @@ platforms:
     os: Windows
     osVersion: 10
     browserVersion: 120.0
-  # - browserName: playwright-webkit
-  #   os: OS X
-  #   osVersion: Monterey
-  #   browserVersion: 18
-  # - browserName: chrome
-  #   osVersion: 12.0
-  #   deviceName: Samsung Galaxy S22 Ultra
+  - browserName: playwright-webkit
+    os: OS X
+    osVersion: Monterey
+    browserVersion: 18
+  - browserName: chrome
+    osVersion: 12.0
+    deviceName: Samsung Galaxy S22 Ultra
+  - browserName: safari
+    osVersion: 16.6
+    deviceName: iPhone SE 2020
