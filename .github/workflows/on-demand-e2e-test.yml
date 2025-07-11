@@ -1,0 +1,97 @@
+# This is a basic workflow that is manually triggered
+
+name: Playwright On-Demand e2e Tests
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+     
+      run-on-browserstack:
+        type: boolean
+        description: "Run tests on BrowserStack"
+        required: true
+        default: false
+      environment:
+        type: choice
+        description: "The environment where tests will be run"
+        required: true
+        default: staging
+        options:
+          - development
+          - testing
+      suite:
+        type: choice
+        description: "The test suite to be run"
+        required: true
+        default: "@sanity"
+        options:
+          - "@smoke"
+          - "@regression"
+      browser:
+        type: string
+        description: "The target name to be run from BrowserStack"
+        required: true
+        default: "chromium"
+        options:
+          - "windows-chrome_on_bs"
+          - "osx-chrome_on_bs"
+          - "samsung-android_on_bs"
+          - "iPhone_on_bs"
+          - "desktop-chrome_on_dcoker"
+jobs:
+  run-e2e-tests-on-browserstack:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.50.1
+    steps:
+      - name: Check if running on org vs personal
+        run: |
+          if [ "${{ github.repository_owner }}" = "SearsHomeServices" ]; then
+            echo "Running under organization repository"
+            echo "Owner type: ${{ github.event.repository.owner.type }}"
+          else
+            echo "Running under personal repository"
+            echo "Owner type: ${{ github.event.repository.owner.type }}"
+          fi
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Playwright tests on selected browsers
+        env:
+          RUN_ON_BROWSERSTACK: ${{ github.event.inputs.run-on-browserstack }}
+          SELECTED_BROWSER: ${{ github.event.inputs.browser }}
+        run: |
+          if [ "$RUN_ON_BROWSERSTACK" = "true" ]; then
+            bs_selected_browser="$SELECTED_BROWSER"
+            if [ "$SELECTED_BROWSER" = "windows-chrome_on_bs" ]; then
+              bs_selected_browser="-120:Windows 10-browserstack"
+            elif [ "$SELECTED_BROWSER" = "osx-chrome_on_bs" ]; then
+              bs_selected_browser="-18:OSX Monterey-browserstack"
+            elif [ "$SELECTED_BROWSER" = "samsung-android_on_bs" ]; then
+              bs_selected_browser="-Samsung Galaxy S22 Ultra:12-browserstack-mobile"
+            elif [ "$SELECTED_BROWSER" = "iPhone_on_bs" ]; then
+              bs_selected_browser="-iPhone SE 2020:16.6-browserstack-mobile"
+            else
+              echo "Unsupported browser selected for BrowserStack."
+            fi
+            echo "Running tests in browserstack environment with: $bs_selected_browser"
+            BROWSERSTACK_USERNAME=${{ secrets.BS_UNAME }} BROWSERSTACK_ACCESS_KEY=${{ secrets.BS_KEY }} npm run test:e2e-browserstack -- --project="$bs_selected_browser" --workers=2
+          else
+            echo "Running tests in microsoft docker image"
+            npm run test:e2e -- --project="chromium" --workers=2
+          fi  
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/

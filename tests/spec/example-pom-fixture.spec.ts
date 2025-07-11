@@ -1,4 +1,5 @@
 import { expect, basePage as test } from "../fixture/basePage";
+test.describe.configure({ mode: 'parallel' });
 
 
 test("e2e test - 1", async ({ homePage }) => {
