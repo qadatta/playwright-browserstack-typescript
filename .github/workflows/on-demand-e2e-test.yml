@@ -46,8 +46,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.50.1
-    steps:
+      image: mcr.microsoft.com/playwright:v1.53.0-noble
+      steps:
       - name: Check if running on org vs personal
         run: |
           if [ "${{ github.repository_owner }}" = "SearsHomeServices" ]; then
