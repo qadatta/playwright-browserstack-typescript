@@ -19,7 +19,7 @@ export class HomePage {
    */
   async verify() {
     await test.step(`verify Home page is loaded`, async () => {
-      await expect(this.page).toHaveTitle(/Playwright/, { timeout: 30000 });
+      await expect(this.page).toHaveTitle(/Appliance Parts | Replacement Water Filters | Lawn & Garden Repair Parts/, { timeout: 30000 });
     });
   }
 }

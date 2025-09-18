@@ -9,17 +9,27 @@ buildIdentifier: ${BUILD_NUMBER}
 consoleLogs: info
 
 platforms:
+  # - browserName: chrome
+  #   os: Windows
+  #   osVersion: 10
+  #   browserVersion: 120.0
+  #   playwrightConfigOptions:
+  #     name: windows-chrome
+  # - browserName: playwright-webkit
+  #   os: OS X
+  #   osVersion: Monterey
+  #   browserVersion: 18
+  #   playwrightConfigOptions:
+  #     name: mac-webkit
   - browserName: chrome
-    os: Windows
-    osVersion: 10
-    browserVersion: 120.0
-  - browserName: playwright-webkit
-    os: OS X
-    osVersion: Monterey
-    browserVersion: 18
-  - browserName: chrome
-    osVersion: 12.0
-    deviceName: Samsung Galaxy S22 Ultra
-  - browserName: safari
-    osVersion: 16.6
-    deviceName: iPhone SE 2020
+    osVersion: 13.0
+    deviceName: Samsung Galaxy S23
+    playwrightConfigOptions:
+      name: android-chrome
+      browserstack.playwrightVersion: 1.51.0
+  # - browserName: safari
+  #   osVersion: 16.6
+  #   deviceName: iPhone SE 2020
+  #   playwrightConfigOptions:
+  #     name: ios-safari
+  

@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "1.47.0",
+    "@playwright/test": "1.51.0",
     "@types/node": "^20.14.10",
-    "browserstack-node-sdk": "1.36.1"
+    "browserstack-node-sdk": "1.40.8"
   }
 }
