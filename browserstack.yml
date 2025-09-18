@@ -13,13 +13,21 @@ platforms:
     os: Windows
     osVersion: 10
     browserVersion: 120.0
+    playwrightConfigOptions:
+      name: windows-chrome
   - browserName: playwright-webkit
     os: OS X
     osVersion: Monterey
     browserVersion: 18
+    playwrightConfigOptions:
+      name: mac-chrome
   - browserName: chrome
     osVersion: 12.0
     deviceName: Samsung Galaxy S22 Ultra
+    playwrightConfigOptions:
+      name: android-chrome
   - browserName: safari
     osVersion: 16.6
     deviceName: iPhone SE 2020
+    playwrightConfigOptions:
+      name: iPhone-safari
